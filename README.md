@@ -1,4 +1,4 @@
-https://travis-ci.org/herrevilkitten/collab-ng2.svg?branch=master
+[![Build Status](https://travis-ci.org/herrevilkitten/collab-ng2.svg?branch=master)](https://travis-ci.org/herrevilkitten/collab-ng2)
 
 # Collab
 
