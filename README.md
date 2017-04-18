@@ -1,3 +1,5 @@
+https://travis-ci.org/herrevilkitten/collab-ng2.svg?branch=master
+
 # Collab
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
