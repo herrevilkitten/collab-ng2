@@ -1,0 +1,14 @@
+app-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  app-canvas {
+    width: 100%;
+    height: calc(100% - 64px);
+
+    md-sidenav-container {
+      height: 100%;
+    }
+  }
+}

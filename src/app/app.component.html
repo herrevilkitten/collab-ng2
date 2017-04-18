@@ -1,4 +1,12 @@
-<h1>
-  {{title}}
-</h1>
+<md-toolbar>
+  <span>Collab</span>
+  <button md-button routerLink="./main">
+      Dashboard
+      <md-icon>developer_board</md-icon>
+    </button>
+  <button md-button routerLink="./main/canvas">
+      Canvas
+      <md-icon>image</md-icon>
+    </button>
+</md-toolbar>
 <router-outlet></router-outlet>

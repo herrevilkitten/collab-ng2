@@ -1,0 +1,25 @@
+<md-sidenav-container>
+  <md-sidenav #canvasSidebar mode="side" opened="true">
+    <md-list>
+      <md-button-toggle-group vertical #canvasToolGroup="mdButtonToggleGroup" value="pencil">
+        <md-button-toggle value="pencil">
+          <md-icon>create</md-icon>
+        </md-button-toggle>
+        <md-button-toggle value="line">
+          <md-icon>show_chart</md-icon>
+        </md-button-toggle>
+        <md-button-toggle value="rectangle">
+          <md-icon>stop</md-icon>
+        </md-button-toggle>
+        <md-button-toggle value="oval">
+          <md-icon>fiber_manual_record</md-icon>
+        </md-button-toggle>
+      </md-button-toggle-group>
+    </md-list>
+  </md-sidenav>
+  <button md-mini-fab class="canvas-menu-toggle" (click)="canvasSidebar.toggle()">
+    <md-icon>menu</md-icon>
+  </button>
+  <div #canvasContainer svgJs (mousemove)="onMove($event)" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseenter)="onMouseEnter($event)">
+  </div>
+</md-sidenav-container>
