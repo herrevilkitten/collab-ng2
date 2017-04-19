@@ -191,7 +191,33 @@ export class CanvasComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.svgJs.svg.node.ondragover = (event: DragEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+      return false;
+    };
+
+    this.svgJs.svg.node.ondrop = (event: DragEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+
+      const files = event.dataTransfer.files;
+      if (!files.length || !files[0].type.startsWith('image/')) {
+        return false;
+      }
+      const reader = new FileReader();
+      reader.onload = (fileEvent: any) => {
+        this.svgJs.svg
+          .image(fileEvent.target.result)
+          .move(event.offsetX, event.offsetY);
+      };
+      reader.readAsDataURL(files[0]);
+
+      return false;
+    };
+  }
 
   onMouseEnter($event: MouseEvent) {
     if (!$event.buttons) {
