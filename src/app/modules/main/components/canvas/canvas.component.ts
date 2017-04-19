@@ -161,8 +161,11 @@ export class EllipseShape extends CanvasShape {
     const { x, y } = this.parseMouseEvent(event);
     const originalX = this.original.attr('originalX');
     const originalY = this.original.attr('originalY');
-    const width = Math.abs(originalX - x) * 2;
-    const height = Math.abs(originalY - y) * 2;
+    let width = Math.abs(originalX - x) * 2;
+    let height = Math.abs(originalY - y) * 2;
+    if (event.shiftKey) {
+      height = width = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+    }
     this.original.size(width, height);
     this.original.attr({
       fill: '#000',
