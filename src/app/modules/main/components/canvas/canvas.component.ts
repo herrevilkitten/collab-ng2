@@ -217,6 +217,12 @@ export class CanvasComponent implements OnInit {
 
       return false;
     };
+
+    document.ontouchmove = (event: TouchEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      return false;
+    };
   }
 
   onMouseEnter($event: MouseEvent) {
