@@ -4,7 +4,14 @@
 <head>
   <meta charset="utf-8">
   <title>Collab</title>
-  <base href="/">
+  <script>
+    var baseHref = window.location.pathname.substring(1);
+    if (!baseHref) {
+      baseHref = '/';
+    }
+    document.write('<base href="' + baseHref + '" />');
+
+  </script>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
