@@ -12,6 +12,14 @@ before_script:
 script:
   - ng build --prod
 
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist
+  on:
+    branch: master
+
 notifications:
   email:
     on_failure: change
