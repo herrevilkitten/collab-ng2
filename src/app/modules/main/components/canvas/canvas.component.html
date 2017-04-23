@@ -17,9 +17,11 @@
       </md-button-toggle-group>
     </md-list>
   </md-sidenav>
+  <!--
   <button md-mini-fab class="canvas-menu-toggle" (click)="canvasSidebar.toggle()">
     <md-icon>menu</md-icon>
   </button>
+  -->
   <div #canvasContainer svgJs (touchstart)="onMouseDown($event)" (touchmove)="onMove($event)" (touchend)="onMouseUp($event)"
     (mousemove)="onMove($event)" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseenter)="onMouseEnter($event)">
   </div>

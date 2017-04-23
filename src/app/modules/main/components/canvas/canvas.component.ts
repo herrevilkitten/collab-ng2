@@ -12,16 +12,28 @@ export abstract class CanvasShape {
 
   }
 
-  startDrawing(event: MouseEvent): this { return this; }
+  startDrawing(event: MouseEvent | TouchEvent): this { return this; }
 
-  continueDrawing(event: MouseEvent): this { return this; }
+  continueDrawing(event: MouseEvent | TouchEvent): this { return this; }
 
-  endDrawing(event: MouseEvent): this { return this; }
+  endDrawing(event: MouseEvent | TouchEvent): this { return this; }
 
-  protected parseMouseEvent(event: MouseEvent) {
+  protected parseMouseEvent(event: MouseEvent | TouchEvent) {
+    let x;
+    let y;
+    if (event instanceof MouseEvent) {
+      x = event.offsetX;
+      y = event.offsetY;
+    } else {
+      const rect = (<any>event.target).getBoundingClientRect()
+      x = event.targetTouches[0].pageX - rect.left;
+      y = event.targetTouches[0].pageY - rect.top;
+//      x = event.touches.item(0).clientX;
+//      y = event.touches.item(0).clientY;
+    }
     return {
-      x: event.offsetX,
-      y: event.offsetY,
+      x: x,
+      y: y,
     };
   }
 
@@ -33,7 +45,7 @@ export abstract class CanvasShape {
 export class PencilShape extends CanvasShape {
   lastNode = '';
 
-  startDrawing(event: MouseEvent) {
+  startDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.lastNode = 'M' + x + ' ' + y;
     this.original = this.svg
@@ -46,7 +58,7 @@ export class PencilShape extends CanvasShape {
     return this;
   }
 
-  continueDrawing(event: MouseEvent) {
+  continueDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.lastNode = 'L' + x + ' ' + y;
     this.original
@@ -61,7 +73,7 @@ export class PencilShape extends CanvasShape {
 }
 
 export class LineShape extends CanvasShape {
-  startDrawing(event: MouseEvent) {
+  startDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.original = this.svg
       .line(x, y, x, y)
@@ -76,7 +88,7 @@ export class LineShape extends CanvasShape {
     return this;
   }
 
-  continueDrawing(event: MouseEvent) {
+  continueDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.original.attr({
       fill: '#000',
@@ -89,7 +101,7 @@ export class LineShape extends CanvasShape {
 }
 
 export class RectangleShape extends CanvasShape {
-  startDrawing(event: MouseEvent) {
+  startDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.original = this.svg
       .rect(1, 1)
@@ -104,7 +116,7 @@ export class RectangleShape extends CanvasShape {
     return this;
   }
 
-  continueDrawing(event: MouseEvent) {
+  continueDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     const originalX = this.original.attr('originalX');
     const originalY = this.original.attr('originalY');
@@ -142,7 +154,7 @@ export class RectangleShape extends CanvasShape {
 }
 
 export class EllipseShape extends CanvasShape {
-  startDrawing(event: MouseEvent) {
+  startDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     this.original = this.svg
       .ellipse(1, 1)
@@ -157,7 +169,7 @@ export class EllipseShape extends CanvasShape {
     return this;
   }
 
-  continueDrawing(event: MouseEvent) {
+  continueDrawing(event: MouseEvent | TouchEvent) {
     const { x, y } = this.parseMouseEvent(event);
     const originalX = this.original.attr('originalX');
     const originalY = this.original.attr('originalY');
@@ -225,16 +237,25 @@ export class CanvasComponent implements OnInit {
     };
   }
 
-  onMouseEnter($event: MouseEvent) {
-    if (!$event.buttons) {
+  onMouseEnter($event: MouseEvent | TouchEvent) {
+    if ($event instanceof TouchEvent || !$event.buttons) {
       this.mouseDown = false;
     }
   }
 
-  onMouseDown($event: MouseEvent) {
+  onMouseDown($event: MouseEvent | TouchEvent | TouchEvent) {
     this.mouseDown = true;
-    const x = $event.offsetX;
-    const y = $event.offsetY;
+    let x;
+    let y;
+    if ($event instanceof MouseEvent) {
+      x = $event.offsetX;
+      y = $event.offsetY;
+    } else {
+      x = $event.touches.item(0).clientX;
+      y = $event.touches.item(0).clientY;
+    }
+
+    console.log('event we got', $event);
 
     if (this.shape) {
       this.shape.endDrawing($event);
@@ -256,7 +277,7 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-  onMouseUp($event: MouseEvent) {
+  onMouseUp($event: MouseEvent | TouchEvent) {
     this.mouseDown = false;
     if (this.shape) {
       this.shape.endDrawing($event);
@@ -264,7 +285,7 @@ export class CanvasComponent implements OnInit {
     this.shape = null;
   }
 
-  onMove($event: MouseEvent) {
+  onMove($event: MouseEvent | TouchEvent) {
     if (this.mouseDown && this.shape) {
       this.shape.continueDrawing($event);
     }

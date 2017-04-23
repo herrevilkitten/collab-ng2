@@ -10,7 +10,7 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod
+  - ng build --prod --base-href="/gh-pages/"
 
 deploy:
   provider: pages
