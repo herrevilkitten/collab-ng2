@@ -10,7 +10,7 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod --base-href="/gh-pages/"
+  - ng build --prod --base-href="/collab-ng2/"
 
 deploy:
   provider: pages
